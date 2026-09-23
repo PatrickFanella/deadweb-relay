@@ -1,5 +1,11 @@
 # Deadweb Relay
 
+**Canonical source: [Subcult Gitea](https://git.subcult.tv/subculture-collective/deadweb-relay).**
+The GitHub repository is a read-only distribution mirror. Please open
+[issues](https://git.subcult.tv/subculture-collective/deadweb-relay/issues) and
+[pull requests](https://git.subcult.tv/subculture-collective/deadweb-relay/pulls)
+on Gitea; development and CI belong there.
+
 A small Go website with readable HTML, plain text, JSON, a guestbook, and public notes.
 
 [Live site](https://www2.onnwee.me/) · [HTTP guide](https://www2.onnwee.me/help.txt) · [Implementation article](https://www2.onnwee.me/reference/http-relay.txt)
