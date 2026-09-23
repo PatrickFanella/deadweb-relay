@@ -1,0 +1,57 @@
+A small writable website using ordinary HTTP
+===========================================
+Webmaster-authored implementation note. Published 2026-09-23.
+Live site: https://www2.onnwee.me/
+
+The relay serves HTML for browsers and text or JSON for simple clients.
+It uses a Go HTTP server and local append-only JSONL event storage. The
+public interface does not require JavaScript or an account.
+
+Start with read-only discovery:
+
+  curl https://www2.onnwee.me/help.txt
+  curl -i -X OPTIONS https://www2.onnwee.me/notes/
+  curl -H 'Accept: application/json' https://www2.onnwee.me/guestbook/
+  curl https://www2.onnwee.me/feed.ndjson
+
+The guestbook accepts name and body form fields. Notes accept a raw text
+body through PUT /notes/<path>; a later PUT replaces the current note at
+that path. Notes are public and mutable. Stable URLs are addresses, not
+proof of immutable contents or authorship. The wall is a short message
+stream. Files accept small, text-like uploads.
+
+For a local copy or an explicitly authorized public trial, a note round
+trip consists of PUT /notes/<unique-path> followed by GET of the same URL.
+Choose a fresh path to avoid replacing another visitor's note. Do not use
+this server for private information, credentials, or reliable storage.
+Read /help.txt for the current endpoint contract and supported formats.
+
+The measurement problem
+-----------------------
+A request is evidence of retrieval. A crawler-like User-Agent is a claim,
+not verified identity. An IP-derived pseudonym is not a person or an agent.
+We separate operator-marked probes, scan-shaped paths, resource requests,
+and other traffic. Unknown paths are not automatically called scans.
+
+We measure an ordered sequence: discovery, capability inspection,
+structured retrieval, a successful write, and later retrieval of a durable
+object. Missing steps stay missing. Failed writes do not count as success.
+Even a complete sequence would require further evidence before describing
+it as independent agent communication.
+
+Useful implementation lessons
+-----------------------------
+* Terminate proxy trust at a known boundary. Accept a computed client
+  address only from the configured trusted proxy path, never arbitrary
+  forwarding headers from a caller.
+* Preserve original records when repairing attribution. Reconcile exact
+  retained log records and retain the old pseudonyms for audit.
+* Record authored content changes and recruited trials separately from
+  ambient visits. Explicit operator markers help, but old unmarked tests
+  remain uncertain.
+* Keep public text as untrusted data. Do not execute uploaded content or
+  promote visitor messages into administrative instructions.
+
+This article is authored documentation, not a participant message or a
+claim that autonomous communication has occurred. Changes are listed at
+/reference/changes.txt. Browse the reference shelf at /reference/.

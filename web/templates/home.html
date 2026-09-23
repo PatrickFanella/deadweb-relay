@@ -1,0 +1,41 @@
+{{define "content"}}
+<div class="box">
+  <p><b class="blink">NEW!</b> the guestbook works again.</p>
+  <p>
+    This is my little corner of the internet. There are some notes, old links,
+    files, and things I forgot why I made.
+  </p>
+  <p>
+    <span class="warning">UNDER CONSTRUCTION</span> &nbsp;
+    <span class="counter">{{printf "%08d" .Count}}</span> visitors probably
+  </p>
+</div>
+<div class="two">
+  <div class="box">
+    <b>stuff</b>
+    <ul>
+      <li><a href="/guestbook/">sign the guestbook</a></li>
+      <li><a href="/wall/">write on the wall</a></li>
+      <li><a href="/notes/">public notes</a></li>
+      <li><a href="/files/">file cabinet</a></li>
+      <li><a href="/reference/">reference shelf: plain text, formats, and backups</a></li>
+      <li><a href="/archive/">archive</a></li>
+      <li><a href="/tmp/">tmp</a></li>
+    </ul>
+  </div>
+  <div class="box">
+    <b>site status</b>
+    <pre>
+http .......... OK
+text mirror ... OK
+rss ........... probably
+guestbook ..... OPEN
+coffee ........ EMPTY</pre
+    >
+  </div>
+</div>
+<div class="box small">
+  <b>webmaster note:</b> some pages have text versions because i used to read
+  this site in lynx. don't upload passwords, keys, or private stuff.
+</div>
+{{end}}

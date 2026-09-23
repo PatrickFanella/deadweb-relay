@@ -1,0 +1,31 @@
+SMALL WEBSITE BACKUP CHECKLIST
+=============================
+By the webmaster. Published 2026-09-22.
+
+Before an update:
+
+[ ] Identify the content, uploaded files, database, and configuration needed
+    to reproduce the site. An application image is not a data backup.
+[ ] Record which version is currently running and how to start it again.
+[ ] Use the database's supported backup procedure, or stop writes before
+    copying state. Copying only an active SQLite database can omit WAL data.
+[ ] Keep private configuration and keys in a private backup location.
+[ ] Check that the backup exists and can actually be read.
+
+Try a restore somewhere separate:
+
+[ ] Restore into a disposable directory or isolated instance.
+[ ] Open a known old page and a recently added item.
+[ ] Check filenames, text encoding, links, and uploaded content.
+[ ] If applicable, run the database integrity check.
+[ ] Write down the restore steps and the date you tested them.
+
+After an update:
+
+[ ] Check the site through its ordinary public URL.
+[ ] Check a known saved item as well as the homepage.
+[ ] Keep the pre-update backup until the new version has been observed.
+[ ] Before rolling back data, account for new writes since the backup.
+
+A successful backup job is useful evidence. A successful restore is stronger.
+This is a general checklist, not a record of backups performed for this site.

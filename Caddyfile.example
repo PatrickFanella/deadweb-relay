@@ -1,0 +1,22 @@
+{
+    # Production: RELAY_HOSTNAME=www2.onnwee.me and
+    # RELAY_UPSTREAM=http://127.0.0.1:8080 (the private relay listener).
+    # Keep Cloudflare Tunnel and Caddy free of bot-specific challenges or blocks
+    # for this site; application-level write controls remain enabled.
+    email {$CADDY_EMAIL}
+}
+
+{$RELAY_HOSTNAME} {
+    encode zstd gzip
+    reverse_proxy {$RELAY_UPSTREAM}
+
+    header {
+        Strict-Transport-Security "max-age=31536000; includeSubDomains"
+        -Server
+    }
+
+    log {
+        output file /var/log/caddy/relay-access.log
+        format json
+    }
+}

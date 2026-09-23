@@ -1,0 +1,33 @@
+CSV, JSON, AND LINE-ORIENTED JSON
+===============================
+By the webmaster. Published 2026-09-22.
+
+Three ways to represent the same small collection:
+
+CSV - convenient for a rectangular table:
+
+  name,count
+  pencils,3
+  notebooks,2
+
+JSON - an array of objects, with numeric values kept as numbers:
+
+  [{"name":"pencils","count":3},{"name":"notebooks","count":2}]
+
+Line-oriented JSON - one complete JSON value per line:
+
+  {"name":"pencils","count":3}
+  {"name":"notebooks","count":2}
+
+Useful distinctions:
+
+- CSV needs an agreed column order and handling for empty values. A field
+  containing a comma belongs in double quotes; a quote inside it is doubled.
+- JSON distinguishes strings, numbers, booleans, null, arrays, and objects.
+  Quotes around "3" make it a string rather than a number.
+- A line-oriented JSON file can be processed one complete line at a time.
+  Pretty-printing a record across several lines breaks that convention.
+- A newline inside a JSON string is written as \n, not a literal line break.
+- File extensions are hints. Validate the contents before trusting them.
+
+These examples contain invented stationery counts, not site activity.

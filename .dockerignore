@@ -1,0 +1,9 @@
+.git
+.env
+data/
+www2-observatory/
+.playwright-cli/
+output/
+relay
+seed
+bin/

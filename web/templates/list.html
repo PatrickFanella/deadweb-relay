@@ -1,0 +1,15 @@
+{{define "content"}}
+<div class="box">
+  <h2>{{.Heading}}</h2>
+  {{if .Intro}}
+  <p>{{.Intro}}</p>
+  {{end}} {{if .FormHTML}}{{.FormHTML}}{{end}}
+</div>
+<div class="box">
+  {{if .Items}} {{range .Items}}
+  <div class="entry">{{.}}</div>
+  {{end}} {{.PageNav}} {{else}}
+  <p class="small">nothing here yet.</p>
+  {{end}}
+</div>
+{{end}}

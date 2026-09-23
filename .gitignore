@@ -1,0 +1,9 @@
+.env
+data/*.jsonl
+data/files/*
+!data/files/.gitkeep
+bin/
+*.zip
+
+*.tar.gz
+output/

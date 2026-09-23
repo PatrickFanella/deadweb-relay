@@ -1,0 +1,48 @@
+services:
+  relay:
+    build: .
+    ports:
+      # Keep the listener private behind your reverse proxy.
+      # Loopback is the local-development default.
+      - "${RELAY_BIND_ADDR:-127.0.0.1}:8080:8080"
+    environment:
+      ADDR: :8080
+      DATA_DIR: /app/data
+      SITE_NAME: ${SITE_NAME:-Patrick's Internet Relay}
+      BASE_URL: ${BASE_URL:-http://localhost:8080}
+      ADMIN_TOKEN: ${ADMIN_TOKEN:?set ADMIN_TOKEN in .env}
+      OBSERVATORY_HMAC_KEY: ${OBSERVATORY_HMAC_KEY:?set OBSERVATORY_HMAC_KEY in .env}
+      MAX_WRITE_BYTES: ${MAX_WRITE_BYTES:-65536}
+      WRITE_RATE_PER_HOUR: ${WRITE_RATE_PER_HOUR:-60}
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp:mode=1777
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 128
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "wget",
+          "-q",
+          "-T",
+          "2",
+          "-O",
+          "/dev/null",
+          "http://127.0.0.1:8080/healthz",
+        ]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    logging:
+      driver: json-file
+      options:
+        max-size: 10m
+        max-file: "3"

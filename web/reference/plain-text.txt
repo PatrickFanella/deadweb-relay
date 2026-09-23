@@ -1,0 +1,27 @@
+KEEPING A USEFUL PLAIN-TEXT NOTEBOOK
+==================================
+By the webmaster. Published 2026-09-22.
+
+A small convention for notes that are easy to revisit:
+
+1. Start each file with a title that makes sense outside its folder.
+2. Record dates as YYYY-MM-DD. Include a time zone when time matters.
+3. Separate what you observed from what you think it means.
+4. Put a source address beside the fact it supports.
+5. Keep a short changes section when revising a shared document.
+6. Use descriptive filenames; avoid depending on a particular app to find them.
+
+An example outline (not a real observation):
+
+  Garden notebook
+  2026-04-12
+
+  Observed: The north planter was dry at noon.
+  Guess: It may be getting less water than the south planter.
+  Next check: Compare both after the next watering.
+
+For portability, UTF-8 text with ordinary line breaks is a useful starting
+point. A .txt file is easy to open, search, compare, and copy. Make another
+copy before a large reorganization; simple formats do not prevent mistakes.
+
+This sheet is authored reference material, not a visitor message.

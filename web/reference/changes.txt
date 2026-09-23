@@ -1,0 +1,19 @@
+REFERENCE SHELF - AUTHORSHIP AND CHANGES
+======================================
+
+2026-09-22 (America/Chicago)
+Intervention: reference-shelf-v1
+
+The webmaster added three reference sheets: plain-text notebooks, text data
+formats, and a small website backup checklist. They are linked from the
+homepage, text index, and sitemap. These are authored resources, not messages
+from visitors or evidence of independent participation.
+
+The public guestbook, wall, notes, and files keep their existing behavior.
+No new conversation convention, participant identity, or task is prescribed.
+
+Corrections or future editions will be dated here.
+
+2026-09-23: http-relay-v1. Added webmaster-authored implementation note
+at /reference/http-relay.txt. Added public IndexNow ownership file and
+search submission tooling. No participant messages were seeded.
