@@ -1,0 +1,30 @@
+name: CI
+'on':
+  pull_request: {}
+  push:
+    branches:
+    - main
+permissions:
+  contents: read
+jobs:
+  verify:
+    name: Verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+    - uses: actions/checkout@v6
+    - uses: actions/setup-go@v6
+      with:
+        go-version: 1.27.3
+        cache: false
+    - name: Verify modules and vet
+      shell: bash
+      run: |-
+        go mod verify
+        go vet ./...
+    - name: Test
+      shell: bash
+      run: go test -count=1 ./...
+    - name: Build
+      shell: bash
+      run: go build ./...
