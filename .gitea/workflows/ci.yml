@@ -1,5 +1,6 @@
 name: CI
 'on':
+  workflow_dispatch: {}
   pull_request: {}
   push:
     branches:
@@ -28,3 +29,110 @@ jobs:
     - name: Build
       shell: bash
       run: go build ./...
+    - name: Check backup archive acceptance
+      run: python3 -m unittest discover -s scripts -p 'test_*.py' -v
+
+  image:
+    name: Build relay and deploy Dozor
+    needs: verify
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    env:
+      DEPLOY_REVISION: ${{ github.sha }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          ref: ${{ github.sha }}
+      - name: Reuse an already accepted relay artifact
+        id: artifact
+        if: github.server_url == 'https://git.subcult.tv' && github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        shell: bash
+        env:
+          DEPLOY_KEY: ${{ secrets.HOMELAB_DEPLOY_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.HOMELAB_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$DEPLOY_REVISION"
+          test -n "$DEPLOY_KEY"
+          test -n "$DEPLOY_KNOWN_HOSTS"
+          umask 077
+          deploy_dir=$(mktemp -d)
+          trap 'rm -rf "$deploy_dir"' EXIT
+          printf '%s\n' "$DEPLOY_KEY" > "$deploy_dir/key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$deploy_dir/known_hosts"
+          unset DEPLOY_KEY DEPLOY_KNOWN_HOSTS
+          ssh_args=(-F /dev/null -i "$deploy_dir/key" -o ControlPath=none -o ControlMaster=no -o BatchMode=yes -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$deploy_dir/known_hosts"
+            -o ConnectTimeout=15 onnwee@10.0.0.57)
+          # shellcheck disable=SC2029
+          ssh "${ssh_args[@]}" "artifact $DEPLOY_REVISION relay" > "$deploy_dir/artifact.json"
+          python3 - "$deploy_dir/artifact.json" "$GITHUB_OUTPUT" <<'PYCODE'
+          import json, re, sys
+          from pathlib import Path
+          info = json.loads(Path(sys.argv[1]).read_text())
+          available = info.get("available") is True
+          if available:
+              assert re.fullmatch(r"sha256:[0-9a-f]{64}", info.get("image", ""))
+          with Path(sys.argv[2]).open("a") as output:
+              output.write("available=" + str(available).lower() + "\n")
+          PYCODE
+      - name: Build deployable images from the verified revision
+        if: steps.artifact.outputs.available != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$DEPLOY_REVISION"
+          image="fleet-deploy/deadweb-relay/relay:$DEPLOY_REVISION"
+          docker build --label "org.opencontainers.image.revision=$DEPLOY_REVISION" \
+            --label "org.opencontainers.image.source=https://git.subcult.tv/subculture-collective/deadweb-relay" -t "$image" .
+          bash scripts/check-image.sh "$image"
+      - name: Back up, restore-check, deploy and verify public assets
+        if: >-
+          github.server_url == 'https://git.subcult.tv' &&
+          github.ref == 'refs/heads/main' &&
+          (github.event_name == 'push' || github.event_name == 'workflow_dispatch')
+        shell: bash
+        env:
+          REUSE_ARTIFACT: ${{ steps.artifact.outputs.available }}
+          DEPLOY_KEY: ${{ secrets.HOMELAB_DEPLOY_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.HOMELAB_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$DEPLOY_REVISION"
+          test -n "$DEPLOY_KEY"
+          test -n "$DEPLOY_KNOWN_HOSTS"
+          umask 077
+          deploy_dir=$(mktemp -d)
+          trap 'rm -rf "$deploy_dir"' EXIT
+          printf '%s\n' "$DEPLOY_KEY" > "$deploy_dir/key"
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > "$deploy_dir/known_hosts"
+          unset DEPLOY_KEY DEPLOY_KNOWN_HOSTS
+          ssh_args=(-F /dev/null -i "$deploy_dir/key" -o ControlPath=none -o ControlMaster=no -o BatchMode=yes -o IdentitiesOnly=yes
+            -o StrictHostKeyChecking=yes -o UserKnownHostsFile="$deploy_dir/known_hosts"
+            -o ConnectTimeout=15 onnwee@10.0.0.57)
+          ssh "${ssh_args[@]}" status
+          image="fleet-deploy/deadweb-relay/relay:$DEPLOY_REVISION"
+          # The forced receiver accepts a full hexadecimal revision; expand it here.
+          if [[ "$REUSE_ARTIFACT" != true ]]; then
+            # shellcheck disable=SC2029
+            docker save "$image" | ssh "${ssh_args[@]}" "receive $DEPLOY_REVISION relay"
+          fi
+          # shellcheck disable=SC2029
+          ssh "${ssh_args[@]}" "deploy $DEPLOY_REVISION"
+          # shellcheck disable=SC2029
+          ssh "${ssh_args[@]}" "artifact $DEPLOY_REVISION relay" > "$deploy_dir/artifact.json"
+          python3 - "$deploy_dir/artifact.json" <<'PYCODE'
+          import json, re, sys
+          info = json.load(open(sys.argv[1]))
+          assert info["available"] is True
+          assert re.fullmatch(r"sha256:[0-9a-f]{64}", info["image"])
+          PYCODE
+          curl --fail --silent --show-error --retry 4 --retry-all-errors \
+            --max-time 30 https://www2.onnwee.me/ > "$deploy_dir/live.html"
+          /usr/bin/grep -q 'a SUBCULT project' "$deploy_dir/live.html"
+          for asset in favicon.svg apple-touch-icon.png og.png mark.svg; do
+            curl --fail --silent --show-error --retry 4 --retry-all-errors \
+              --max-time 30 "https://www2.onnwee.me/static/brand/deadweb-relay/$asset" > "$deploy_dir/asset"
+            cmp "web/static/brand/deadweb-relay/$asset" "$deploy_dir/asset"
+          done
+          printf 'Live branding assets match the image source at %s\n' "$DEPLOY_REVISION"

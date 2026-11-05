@@ -7,3 +7,5 @@ output/
 relay
 seed
 bin/
+.env.*
+scripts/__pycache__/
