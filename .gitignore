@@ -7,3 +7,4 @@ bin/
 
 *.tar.gz
 output/
+scripts/__pycache__/

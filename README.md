@@ -182,6 +182,10 @@ This is still an Internet-facing writable service. Put it behind HTTPS, keep the
 
 See `Caddyfile.example`.
 
+The live Dozor instance deploys through Gitea CI. See the
+[deployment and rollback procedure](docs/DEPLOYMENT.md) for its backup gate,
+restricted app key and production checks.
+
 ```bash
 BASE_URL=https://www2.onnwee.me docker compose up -d --build
 ```
