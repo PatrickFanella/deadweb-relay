@@ -1,5 +1,7 @@
 # Deadweb Relay
 
+![Deadweb Relay identity](docs/brand/deadweb-relay/readme-lockup.png)
+
 **Canonical source: [Subcult Gitea](https://git.subcult.tv/subculture-collective/deadweb-relay).**
 The GitHub repository is a read-only distribution mirror. Please open
 [issues](https://git.subcult.tv/subculture-collective/deadweb-relay/issues) and
@@ -197,3 +199,7 @@ BASE_URL=https://www2.onnwee.me docker compose up -d --build
 go test ./...
 ./scripts/demo.sh
 ```
+
+## Brand assets
+
+The product identity and selected public exports are recorded in [the brand handoff](docs/brand/deadweb-relay/GUIDE.md) and [source hashes](docs/brand/deadweb-relay/export.json). Regenerate from SUBCULT Studio with `python3 studio/scripts/export_remaining_brand.py deadweb-relay /path/to/this/repository`; use `--check` to verify the export without writing.

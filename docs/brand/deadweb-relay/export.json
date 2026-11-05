@@ -1,0 +1,79 @@
+{
+  "studio_repository": "subculture-collective/subcult-tv",
+  "studio_revision": "6907e56c181949c1d99064dbc38ae9fe660a66d0",
+  "brand": "deadweb-relay",
+  "files": [
+    {
+      "source": "studio/brands/deadweb-relay/GUIDE.md",
+      "target": "docs/brand/deadweb-relay/GUIDE.md",
+      "sha256": "7352d8a3efb482b0b560df251d2dacfd652a4c1d878a9beb7ae05e33023f89d1",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/readme-lockup.png",
+      "target": "docs/brand/deadweb-relay/readme-lockup.png",
+      "sha256": "fdd81ed8eaa380dd66581a0256ec7948f9b0e904bd7ea86943bf7ef582ced9d5",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/social/avatar.png",
+      "target": "docs/brand/deadweb-relay/avatar.png",
+      "sha256": "aef69380f19b1b79c3d2237f4959e427871e6e01e131c44d4aaa6a5ff3d94d30",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/favicon.svg",
+      "target": "web/static/brand/deadweb-relay/favicon.svg",
+      "sha256": "2a3ba65128b290b0c68e4bb491e96cc3e235723f5e8f6b2153ea79b2cdb32fe8",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/favicon.ico",
+      "target": "web/static/brand/deadweb-relay/favicon.ico",
+      "sha256": "3c9a4f3497f91e7ed4e1e8bf5469123631b22a7cf52fc0566dfa2903dfed0db1",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/apple-touch-icon.png",
+      "target": "web/static/brand/deadweb-relay/apple-touch-icon.png",
+      "sha256": "6594c4ba6872f50ab51fffc3dcd0df5cb88bcb8ddc6805dd9bc4712c85209fd9",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/og.png",
+      "target": "web/static/brand/deadweb-relay/og.png",
+      "sha256": "748a1830aecad024ced31daef112bd833ac089a616e4bb5e389665ef8a3f58b1",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/mark.svg",
+      "target": "web/static/brand/deadweb-relay/mark.svg",
+      "sha256": "147ef574c9b1c58ed235ff59749658435fd7b20aaaffed3337375e89f949b536",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/favicon.svg",
+      "target": "web/static/favicon.svg",
+      "sha256": "2a3ba65128b290b0c68e4bb491e96cc3e235723f5e8f6b2153ea79b2cdb32fe8",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/favicon.ico",
+      "target": "web/static/favicon.ico",
+      "sha256": "3c9a4f3497f91e7ed4e1e8bf5469123631b22a7cf52fc0566dfa2903dfed0db1",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/apple-touch-icon.png",
+      "target": "web/static/apple-touch-icon.png",
+      "sha256": "6594c4ba6872f50ab51fffc3dcd0df5cb88bcb8ddc6805dd9bc4712c85209fd9",
+      "transformation": "unchanged copy"
+    },
+    {
+      "source": "studio/brands/deadweb-relay/product/og.png",
+      "target": "web/static/og.png",
+      "sha256": "748a1830aecad024ced31daef112bd833ac089a616e4bb5e389665ef8a3f58b1",
+      "transformation": "unchanged copy"
+    }
+  ]
+}

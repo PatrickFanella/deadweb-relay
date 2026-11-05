@@ -49,6 +49,7 @@ type app struct {
 type baseData struct {
 	Title    string
 	SiteName string
+	BaseURL  string
 	Now      time.Time
 	Count    int64
 	Heading  string
@@ -121,6 +122,7 @@ func main() {
 	mux := http.NewServeMux()
 	staticFS, _ := fs.Sub(webassets.FS, "static")
 	mux.Handle("GET /static/", http.StripPrefix("/static/", http.FileServer(http.FS(staticFS))))
+	mux.Handle("GET /favicon.ico", http.FileServer(http.FS(staticFS)))
 	mux.HandleFunc("/", a.route)
 
 	addr := getenv("ADDR", ":8080")
@@ -315,7 +317,7 @@ func clip(s string, n int) string {
 }
 
 func (a *app) base(title string) baseData {
-	return baseData{Title: title, SiteName: a.siteName, Now: time.Now(), Count: time.Now().Unix() % 100000000}
+	return baseData{Title: title, SiteName: a.siteName, BaseURL: a.baseURL + "/", Now: time.Now(), Count: time.Now().Unix() % 100000000}
 }
 
 func (a *app) health(w http.ResponseWriter, r *http.Request) {
